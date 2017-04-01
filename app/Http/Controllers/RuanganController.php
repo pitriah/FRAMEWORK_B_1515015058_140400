@@ -25,7 +25,7 @@ class RuanganController extends Controller
     	// $ruangan->title = 'Ber-AC (Doakan aja kita punya) :)';
         $ruangan->title=$input->title;
     	$informasi = $ruangan->save() ? 'Berhasil simpan data' : 'Gagal Simpan Data';
-    	return redirect('ruangan')->with(['informasi'=>$informasi]);
+    	//qreturn redirect('ruangan')->with(['informasi'=>$informasi]);
     }
     public function edit($id)
     {
