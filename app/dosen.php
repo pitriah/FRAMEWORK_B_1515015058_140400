@@ -6,16 +6,13 @@ use Illuminate\Database\Eloquent\Model;
 
 class Dosen extends Model
 {
-    protected $table = 'dosen';
+    protected $table = 'Dosen';
     protected $fillable = ['nama','nip','alamat','pengguna_id'];
-
-    protected $table = 'dosen';
-    {
-   		public function pengguna() {
-   		return $this->belongsTo(Pengguna::class);
-   	}
-   	public function Dosenmatakuliah()
-   	{
-   		return $this->hasMany(DosenMataKuliah::class);
-   	}
+	
+	public function pengguna(){
+	return $this->BelongsTo(Pengguna::class);  //kembalian dari hasone pengguna
+	}
+	public function dosen_matakuliah(){
+	return $this->hasMany(Dosen_Matakuliah::class); //one to Many dari dosen matakuliah (one) ke Jadwal matakuliah (many)
+	}
 }
