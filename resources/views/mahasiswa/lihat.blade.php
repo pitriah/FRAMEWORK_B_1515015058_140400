@@ -6,7 +6,7 @@
 	</div>
 	<table class="table">
 		<tr>
-			<td>Nama</td>
+			<td>Nama Mahasiswa</td>
 			<td>:</td>
 			<td>{{ $mahasiswa->nama }}</td>
 		</tr>
@@ -30,6 +30,7 @@
 			<td>:</td>
 			<td>{{ $mahasiswa->pengguna->password }}</td>
 		</tr>
+
 		<tr>
 			<td class="col-xs-4">Dibuat tanggal</td>
 			<td class="col-cs-1">:</td>
@@ -43,3 +44,11 @@
 	</table>
 </div>
 @stop
+<!-- $mahasiswa = Mahasiswa::find($id);
+        $mahasiswa->nama = $input->nama;
+        $mahasiswa->nip = $input->nip;
+        $mahasiswa->alamat = $input->alamat;
+        $mahasiswa->pengguna_id = $input->pengguna_id;
+        $informasi = $mahasiswa->save() ? 'Berhasil update data': 'Gagal update data';
+        return redirect ('mahasiswa') -> with (['informasi'=>$informasi]);
+    } -->

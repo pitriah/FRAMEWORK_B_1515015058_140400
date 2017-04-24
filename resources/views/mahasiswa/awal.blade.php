@@ -10,9 +10,8 @@
 		<thead>
 			<tr>
 				<th>No.</th>
-				<th>Nama</th>
+				<th>Nama Mahasiswa</th>
 				<th>NIM</th>
-				<th>Alamat</th>
 				<th>Aksi</th>
 			</tr>
 		</thead>
@@ -21,9 +20,9 @@
 			@foreach ($semuaMahasiswa as $mahasiswa)
 			<tr>
 				<td>{{ $x++}}</td>
-				<td>{{ $mahasiswa->nama or 'nama kosong' }}</td>
-				<td>{{ $mahasiswa->nim or 'nim kosong' }}</td>
-				<td>{{ $mahasiswa->alamat or 'alamat kosong' }}</td>				
+				
+				<td>{{ $mahasiswa->nama or 'Nama Kosong' }}</td>
+				<td>{{ $mahasiswa->nim or 'NIM Kosong' }}</td>
 				<td>
 					<div class="btn-group" role="group">
 						<a href="{{url('mahasiswa/edit/'.$mahasiswa->id)}}" class="btn btn-warning btn-xs" data-toogle="tooltip" data-placement="top" title="Ubah"><i class="fa fa-pencil"></i></a>
@@ -37,3 +36,12 @@
 	</table>
 </div>
 @stop
+
+<!-- $mahasiswa = Mahasiswa::find($id);
+        $mahasiswa->nama = $input->nama;
+        $mahasiswa->nip = $input->nip;
+        $mahasiswa->alamat = $input->alamat;
+        $mahasiswa->pengguna_id = $input->pengguna_id;
+        $informasi = $mahasiswa->save() ? 'Berhasil update data': 'Gagal update data';
+        return redirect ('mahasiswa') -> with (['informasi'=>$informasi]);
+    } -->

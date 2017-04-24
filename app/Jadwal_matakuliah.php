@@ -4,20 +4,57 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Jadwal_matakuliah extends Model
+class Jadwal_Matakuliah extends Model
 {
-    protected $table = 'Jadwal_matakuliah';
+    protected $table = 'jadwal_matakuliah';
     protected $fillable = ['mahasiswa_id','ruangan_id','dosen_matakuliah_id'];
+    // protected $guarded- ['id'];
+    
+    public function Mahasiswa()
+    {
+        return $this->belongsTo(Mahasiswa::class);
+    }
+    public function Ruangan()
+    {
+        return $this->belongsTo(Ruangan::class);
+    }
 
-	
-	
-	public function mahasiswa(){
-	return $this->belongsTo(Mahasiswa::class); //kebalikan dari hasmany di mahasiswa
-}
-	public function ruangan(){
-	return $this->BelongsTo(Ruangan::class); //kebalikan dari hasmany di ruangan
-	}	
-	public function dosen_matakuliah(){
-	return $this->BelongsTo(Dosen_matakuliah::class); //kebalikan dari hasmany di dosen matakuliah
-	}
+    public function Dosen_Matakuliah()
+    {
+        return $this->belongsTo(Dosen_Matakuliah::class,'dosen_matakuliah_id');
+    }
+
+    public function getNamadsnAttribute(){
+        return $this->dosen_matakuliah->dosen->nama;
+    }
+    public function getNipdsnAttribute(){
+        return $this->dosen_matakuliah->dosen->nip;
+    }
+    public function getMKdsnAttribute(){
+        return $this->dosen_matakuliah->matakuliah->title;
+    }
+    
+    public function getNamamhsAttribute(){
+        return $this->mahasiswa->nama;
+    }
+
+    public function getNimAttribute(){
+        return $this->mahasiswa->nim;
+    }
+    public function getTitleruanganAttribute(){
+        return $this->ruangan->title;
+    }
+
+    
+
+    
+    // public function listDosenMatakuliahDanMahasiswaDanRuangan()
+    // {
+    // 	$out = [];
+    // 	foreach ($this->all() as $jdwlMtk) {
+    // 		$out[$jdwlMtk->id] = "{$jdwlMtk->dosen_matakuliah->dosen->nama} {$jdwlMtk->dosen_matakuliah->dosen->nama} {$jdwlMtk->mahasiswa->nama} (Ruangan {$jdwlMtk->ruangan->title})";
+    // 	}
+    // 	return $out;
+    // }
+    
 }

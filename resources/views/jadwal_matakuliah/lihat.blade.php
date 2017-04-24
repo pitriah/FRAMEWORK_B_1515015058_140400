@@ -2,44 +2,53 @@
 @section('container')
 <div class="panel panel-warning">
 	<div class="panel-heading">
-		<strong><a href="{{ url('mahasiswa') }}"><i style+"color:#8a6d3b" class="fa text-default fa-chevron-left"></i></a> Detail Data Mahasiswa</strong>		
+		<strong><a href="{{ url('jadwal_matakuliah') }}"><i style+"color:#8a6d3b" class="fa text-default fa-chevron-left"></i></a> Detail Jadwal Mahasiswa</strong>		
 	</div>
 	<table class="table">
 		<tr>
-			<td>Nama</td>
+			<td>Nama Mahasiswa</td>
 			<td>:</td>
-			<td>{{ $mahasiswa->nama }}</td>
+			<td>{{ $jadwal_matakuliah->mahasiswa->nama }}</td>
 		</tr>
 		<tr>
-			<td>NIM</td>
+			<td>NIM Mahasiswa</td>
 			<td>:</td>
-			<td>{{ $mahasiswa->nim }}</td>
+			<td>{{ $jadwal_matakuliah->mahasiswa->nim }}</td>
 		</tr>
 		<tr>
-			<td>Alamat</td>
+			<td>Nama Dosen</td>
 			<td>:</td>
-			<td>{{ $mahasiswa->alamat }}</td>
+			<td>{{ $jadwal_matakuliah->dosen_matakuliah->dosen->nama }}</td>
 		</tr>
 		<tr>
-			<td>Username</td>
+			<td>NIP Dosen</td>
 			<td>:</td>
-			<td>{{ $mahasiswa->pengguna->username }}</td>
+			<td>{{ $jadwal_matakuliah->dosen_matakuliah->dosen->nip }}</td>
 		</tr>
 		<tr>
-			<td>Password</td>
+			<td>Nama Matakuliah</td>
 			<td>:</td>
-			<td>{{ $mahasiswa->pengguna->password }}</td>
+			<td>{{ $jadwal_matakuliah->dosen_matakuliah->matakuliah->title }}</td>
 		</tr>
+
 		<tr>
 			<td class="col-xs-4">Dibuat tanggal</td>
 			<td class="col-cs-1">:</td>
-			<td>{{$mahasiswa->created_at}}</td>
+			<td>{{$jadwal_matakuliah->created_at}}</td>
 		</tr>
 		<tr>
 			<td class="col-xs-4">Diupdate tanggal</td>
 			<td class="col-cs-1">:</td>
-			<td>{{$mahasiswa->updated_at}}</td>
+			<td>{{$jadwal_matakuliah->updated_at}}</td>
 		</tr>
 	</table>
 </div>
 @stop
+<!-- $mahasiswa = Mahasiswa::find($id);
+        $mahasiswa->nama = $input->nama;
+        $mahasiswa->nip = $input->nip;
+        $mahasiswa->alamat = $input->alamat;
+        $mahasiswa->pengguna_id = $input->pengguna_id;
+        $informasi = $mahasiswa->save() ? 'Berhasil update data': 'Gagal update data';
+        return redirect ('mahasiswa') -> with (['informasi'=>$informasi]);
+    } -->

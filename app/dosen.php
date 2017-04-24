@@ -6,13 +6,28 @@ use Illuminate\Database\Eloquent\Model;
 
 class Dosen extends Model
 {
-    protected $table = 'Dosen';
+    //
+    protected $table = 'dosen';
     protected $fillable = ['nama','nip','alamat','pengguna_id'];
-	
-	public function pengguna(){
-	return $this->BelongsTo(Pengguna::class);  //kembalian dari hasone pengguna
-	}
-	public function dosen_matakuliah(){
-	return $this->hasMany(Dosen_Matakuliah::class); //one to Many dari dosen matakuliah (one) ke Jadwal matakuliah (many)
-	}
+
+    public function Pengguna()
+    {
+    	return $this->belongsTo(Pengguna::class);// relasi one to one
+    }
+    public function getUsernameAttribute(){
+        return $this->pengguna->username;
+    }
+
+
+    public function dosen_matakuliah()
+    {
+    	return $this->hasMany(Dosen_Matakuliah::class);// relasi many to one
+    }
+    public function listDosenDanNip(){
+        $out = [];
+        foreach ($this->all() as $dsn) {
+            $out[$dsn->id] = "{$dsn->nama} ({$dsn->nip})";
+        }
+        return $out;
+    }
 }

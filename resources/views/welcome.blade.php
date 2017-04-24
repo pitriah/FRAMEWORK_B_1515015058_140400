@@ -38,7 +38,8 @@
     <body>
         <div class="container">
             <div class="content">
-                <div class="title">PITRIAH</div>
+                <div class="title">NAMA : Pitriah</div>
+                <div class="title">NIM : 1515015058</div>
             </div>
         </div>
     </body>

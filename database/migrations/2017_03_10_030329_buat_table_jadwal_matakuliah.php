@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class TableJadwalMatakuliah extends Migration
+class BuatTableJadwalMatakuliah extends Migration
 {
     /**
      * Run the migrations.
@@ -14,11 +14,11 @@ class TableJadwalMatakuliah extends Migration
     {
         Schema::create('jadwal_matakuliah', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('mahasiswa_id',false,true);
+            $table->integer('mahasiswa_id')->unsigned();
             $table->foreign('mahasiswa_id')->references('id')->on('mahasiswa');
-            $table->integer('ruangan_id',false,true);
+            $table->integer('ruangan_id')->unsigned();
             $table->foreign('ruangan_id')->references('id')->on('ruangan');
-            $table->integer('dosen_matakuliah_id',false,true);
+            $table->integer('dosen_matakuliah_id')->unsigned();
             $table->foreign('dosen_matakuliah_id')->references('id')->on('dosen_matakuliah');
             $table->timestamps();
         });

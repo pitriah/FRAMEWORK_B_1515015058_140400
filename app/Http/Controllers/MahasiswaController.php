@@ -1,80 +1,78 @@
-<?php 
- namespace App\Http\Controllers;
- use Illuminate\Http\Request;
- use App\Http\Requests;
+<?php
 
- use App\Mahasiswa;
- use App\Pengguna;
+namespace App\Http\Controllers;
 
+use Illuminate\Http\Request;
 
-// class MahasiswaController extends Controller
-// {
-    // public function awal(){
-    	// return "Hello dari MahasiswaController";
-    // }
-    // public function tambah(){
-    	// return $this->simpan();
-    // }
-    // public function simpan(){
-    	// $mahasiswa = new Mahasiswa();
-    	// $mahasiswa->nama = "Fajar Kh";
-    	// $mahasiswa->nim = "1515015088";
-    	// $mahasiswa->alamat = "Pramuka 6";
-    	// $mahasiswa->pengguna_id = 3;
-    	// $mahasiswa->save();
-    	// return "Data Mahasiswa dengan Nama {$mahasiswa->nama} telah disimpan";
-// }
-// public function semua_mahasiswa() {
-	// $mahasiswa = mahasiswa::all();  //untuk menampilkan semua data 
-	// foreach ($mahasiswa as $mhs) {  //panggilnya pakai foreach
-	// echo "nama :" .$mhs->nama;
-	// echo "<br>";
-	// echo "username :" .$mhs->pengguna->username; 
-	// echo "<p>";} 
-	// }
-	
-// public function mahasiswa () {
-	// $mahasiswa = mahasiswa::find(7);
-	// echo "nama :" .$mahasiswa->nama;
-	// echo "<br>";
-	// echo "username :" .$mahasiswa->pengguna->username;
-// }
-
-// }
-
+use App\Http\Requests\MahasiswaRequest;
+use App\Mahasiswa;
+use App\Pengguna; //
 
 class MahasiswaController extends Controller
 {
+    protected $informasi = 'Gagal melakukan aksi'; //
+    public function awal()
+    {   
+        // return view('mahasiswa.awal', ['data'=>Mahasiswa::all()]);           //
 
-   public function awal()
-    {
-        $semuaMahasiswa = Mahasiswa::all();
-        return view('mahasiswa.awal',compact('semuaMahasiswa'));
+        $semuaMahasiswa = Mahasiswa::all();//
+        return view('mahasiswa.awal', compact('semuaMahasiswa'));
+        // return "Hello dari MahasiswaController";
     }
 
     public function tambah()
     {
+        // return $this->simpan();
         return view('mahasiswa.tambah');
     }
 
-    public function simpan(Request $input)
+    public function simpan(MahasiswaRequest $input)
     {
+        // $mahasiswa = new Mahasiswa();
+        // $mahasiswa->nama = 'Kimebmen Simbolon';
+        // $mahasiswa->nim = '1515015131';
+        // $mahasiswa->alamat = 'Samarinda';
+        // $mahasiswa->pengguna_id = 1;
+        // $mahasiswa->save();
+        // return "Data dengan Nama {$mahasiswa->nama} Telah Disimpan";
+        $pengguna = new Pengguna($input->only('username','password'));
+            if ($pengguna->save()) {
+                $mahasiswa = new Mahasiswa;
+                $mahasiswa->nama = $input->nama;
+                $mahasiswa->nim = $input->nim;
+                $mahasiswa->alamat = $input->alamat;
+                if($pengguna->mahasiswa()->save($mahasiswa)) $this->informasi='Berhasil simpan data';
+            }        
+        return redirect ('mahasiswa')->with(['informasi'=>$this->informasi]);        
+    }    
+            
+// $pengguna = new Pengguna($input->only('username','password'));
+//         if ($pengguna->save()) {
+//         $mahasiswa = new Mahasiswa;
+//         $mahasiswa->nama = $input->nama;
+//         $mahasiswa->nim = $input->nim;
+//         $mahasiswa->alamat = $input->alamat;
+//         $mahasiswa->pengguna_id = $input->pengguna_id;
+//         $informasi = $mahasiswa->save() ? 'Berhasil simpan data' : 'Gagal simpan data';
+//         return redirect ('mahasiswa')->with(['informasi'=>$informasi]);
 
-    $mahasiswa = new mahasiswa;
-    $mahasiswa->nama = $input->nama;
-    $mahasiswa->nim = $input->nim;
-    $mahasiswa->alamat = $input->alamat;
-    $mahasiswa->pengguna_id = $input->pengguna_id;
-    $informasi = $mahasiswa->save() ? 'Berhasil simpan data' : 'Gagal simpan data';
-    return redirect('mahasiswa')->with(['informasi'=>$informasi]);
+            // $mahasiswa = Mahasiswa::find($id);
+            // $mahasiswa = new Mahasiswa;
+            // $mahasiswa->nama = $input->nama;
+            // $mahasiswa->nim = $input->nim;
+            // $mahasiswa->alamat = $input->alamat;    
+            // $informasi = $mahasiswa->save() ? 'Berhasil update data': 'Gagal update data';
+            // return redirect ('mahasiswa')->with(['informasi'=>$informasi]); 
+
     
-    }
-
+        // $mahasiswa->pengguna_id = $input->pengguna_id;
+        // $informasi->save() ?  'Berhasil simpan data' : 'Gagal simpan data';
+    
 
     public function edit($id)
     {
         $mahasiswa = Mahasiswa::find($id);
-        return view('mahasiswa.edit')->with(array('mahasiswa'=>$mahasiswa));
+        return view('mahasiswa.edit')-> with(array('mahasiswa'=>$mahasiswa));
     }
 
     public function lihat($id)
@@ -83,27 +81,32 @@ class MahasiswaController extends Controller
         return view('mahasiswa.lihat')->with(array('mahasiswa'=>$mahasiswa));
     }
 
-   public function update($id, Request $input)
+    public function update($id, MahasiswaRequest $input)
     {
-         $mahasiswa = mahasiswa::find($id);
-    $mahasiswa->nama = $input->nama;
-    $mahasiswa->nim = $input->nim;
-    $mahasiswa->alamat = $input->alamat;
-    $mahasiswa->pengguna_id = $input->pengguna_id;
-    $informasi = $mahasiswa->save() ? 'Berhasil update data' : 'Gagal update data';
-    return redirect('mahasiswa')->with(['informasi'=>$informasi]);
+        $mahasiswa = Mahasiswa::find($id);
+        $pengguna = $mahasiswa->pengguna;
+        $mahasiswa->nama = $input->nama;
+        $mahasiswa->nim = $input->nim;
+        $mahasiswa->alamat = $input->alamat;
+        $mahasiswa->save();
+        if(!is_null($input->username)){
+            $pengguna = $mahasiswa->pengguna->fill($input->only('username'));
+                if(!empty($input->password)) $pengguna->password = $input->password;
+                if($pengguna->save()) $this->informasi = 'Berhasil simpan data';
+        }
+        else{
+            $this->informasi = 'Berhasil simpan data';
+        }
+        // $informasi = $mahasiswa->save() ? 'Berhasil update data': 'Gagal update data';
+        return redirect ('mahasiswa') -> with (['informasi'=>$this->informasi]);
     }
-
-     public function hapus($id)
+    public function hapus($id)
     {
-        /* $mahasiswa = Mahasiswa::find($id);
+        $mahasiswa = Mahasiswa::find($id);
         if($mahasiswa->pengguna()->delete()){
             if($mahasiswa->delete()) $this->informasi = 'Berhasil hapus data';
-            return redirect('mahasiswa')-> with(['informasi'=>$this->informasi]); */
-			
-		$mahasiswa = Mahasiswa::find($id);
-        $informasi = $mahasiswa->delete() ? 'Berhasil hapus data' : 'Gagal hapus data';
-        return redirect('mahasiswa')->with(['informasi'=>$informasi]);
-        
+        }
+        // $informasi = $mahasiswa->delete() ? 'Berhasil hapus data' : 'Gagal hapus data';
+        return redirect('mahasiswa')-> with(['informasi'=>$this->informasi]);
     }
 }
